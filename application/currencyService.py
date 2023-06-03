@@ -13,7 +13,8 @@ class CurrencyService():
         target = details.tail(1)
         date = target.index[0][1]
 
-        predict_y = this.__executor.predict(target["open"].values[0],
+        predict_y = this.__executor.predict(target.index[0][0]
+                                            target["open"].values[0],
                                             target["high"].values[0],
                                             target["low"].values[0],
                                             target["close"].values[0],

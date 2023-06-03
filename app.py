@@ -15,6 +15,6 @@ main_view = Main.as_view('main_view')
 app.add_url_rule('/', view_func=main_view)
 
 if __name__ == '__main__':
-    # app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0')
 
-    app.run(debug=True)
+    # app.run(debug=True)

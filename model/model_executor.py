@@ -49,7 +49,7 @@ class ModelExecutor():
         '''
         result = []
 
-        df = self.__prepare_df(df)
+        df = self.__prepare_df(data)
         prediction = [r.asDict() for r in self.__model.transform(df).collect()][0]
         result.append(prediction['prediction'])
 

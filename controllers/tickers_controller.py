@@ -2,10 +2,11 @@ from flask import Blueprint
 from flask.views import MethodView
 from application.currencyService import currency_service
 from domain.tickers import tickers
+import json
 
 class TickersController(MethodView):
     def get(self):
-        return tickers
+        return json.dumps(tickers)
 
 
 tickers_controller_bp = Blueprint('tickers_controller', __name__)

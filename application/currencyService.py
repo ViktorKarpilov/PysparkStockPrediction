@@ -1,6 +1,7 @@
 from model.model_executor import model_executor
 from yahooquery import Ticker
 from datetime import datetime, timedelta
+import json
 
 class CurrencyService():
     def __init__(this):
@@ -32,12 +33,8 @@ class CurrencyService():
                     target_data['DateTime'].append(timestamp)
 
         predict_y = this.__executor.predict(target_data, hours)
-        result = []
-        for y in predict_y:
-            date += timedelta(hours=1)
-            result.append([y, date])
 
-        return result
+        return json.dumps(predict_y)
 
 currency_service = CurrencyService()
         

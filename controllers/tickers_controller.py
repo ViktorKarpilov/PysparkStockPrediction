@@ -8,7 +8,7 @@ from db import db
 class TickersController(MethodView):
     def get(self):
         tickers = db.tickers.find({}, {'_id': 0})
-        return json.dumps(tickers)
+        return json.dumps(list(tickers))
 
 
 tickers_controller_bp = Blueprint('tickers_controller', __name__)

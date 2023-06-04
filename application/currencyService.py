@@ -11,7 +11,7 @@ class CurrencyService():
         ticker = Ticker(symbol, asynchronous=True)
 
         details = ticker.history(period='2w', interval='1h')
-        target = details.tail(25)
+        target = details.tail(100)
         dickt_target = target.to_dict()
         target_data = {
             'DateTime': [],

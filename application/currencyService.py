@@ -10,7 +10,7 @@ class CurrencyService():
     def get_prediction(this, symbol, hours):
         ticker = Ticker(symbol, asynchronous=True)
 
-        details = ticker.history(period='12d', interval='1h')
+        details = ticker.history(period='2w', interval='1h')
         target = details.tail(25)
         dickt_target = target.to_dict()
         target_data = {

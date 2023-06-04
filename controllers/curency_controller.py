@@ -4,6 +4,31 @@ from application.currencyService import currency_service
 
 class CurrencyController(MethodView):
     def get(self, symbol, hours):
+        # {
+        #     "data": {
+        #         "ticker": "ticker_name",
+        #         "candlestick" : [
+        #       {
+        #          "x": 1685787016, // time
+        #           "y" [open, high, low, close]
+        #        },
+        #        {
+        #          "x": 1685787016, // time
+        #           "y" [open, high, low, close]
+        #        },
+        #      .......
+        #     ],
+        #     "prediction": [
+        #         {
+        #            "x": 1234564 // time
+        #            "y": 3234 // value
+        #         },
+        #           .......
+        #     ]
+        #     },
+        #     "status": "success" / "error",
+        #     "message": "error_message"
+        # }
         return currency_service.get_prediction(symbol, int(hours))
 
 

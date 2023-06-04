@@ -14,7 +14,7 @@ class ModelExecutor():
         self.__spark = SparkSession.builder \
             .appName("Decision Tree Regression with PySpark") \
             .getOrCreate()
-        # self.__model = PipelineModel.load("./model/tree_regressor")
+        self.__model = PipelineModel.load("./model/tree_regressor")
 
     def __prepare_df(self, data):
         df = pd.DataFrame(data)
@@ -48,7 +48,7 @@ class ModelExecutor():
             )
         ], schema=schema)
 
-    def __restore(self, first_close_price: float, prc: list):
+    def __restore(self, prc: list, first_close_price: float):
         prices = [first_close_price * (1 + prc[0])]
         for p in prc[1:]:
             prices.append( prices[-1] * (1 + p) )

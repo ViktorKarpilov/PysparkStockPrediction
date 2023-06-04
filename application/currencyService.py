@@ -34,7 +34,12 @@ class CurrencyService():
 
         predict_y = this.__executor.predict(target_data, hours)
 
-        return json.dumps(predict_y)
+        result = []
+        for y in predict_y:
+            date += timedelta(hours=1)
+            result.append([y, date])
+
+        return json.dumps(result)
 
 currency_service = CurrencyService()
         

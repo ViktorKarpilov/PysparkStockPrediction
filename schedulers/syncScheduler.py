@@ -13,10 +13,10 @@ class SyncScheduler:
     
     def trigger(self):
         print("[INFO]: Scheduler start !")
-        pbar = tqdm(desc='Update', total=db.tickers.count_documents())
+        pbar = tqdm(desc='Update', total=db.tickers.count_documents({}))
         for ticker_doc in db.tickers.find({}):
             symbol = ticker_doc['symbol']
-            ticker = Ticker()
+            ticker = Ticker(symbol)
             data = ticker.history(period='30d', interval='1h').reset_index().to_dict("records")
             if db.ohlc.find_one({'symbol': symbol}, {'ohlc': 0}):
                 db.ohlc.update_one(

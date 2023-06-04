@@ -14,7 +14,7 @@ class ModelExecutor():
         self.__spark = SparkSession.builder \
             .appName("Decision Tree Regression with PySpark") \
             .getOrCreate()
-        self.__model = PipelineModel.load("./model/tree_regressor")
+        # self.__model = PipelineModel.load("./model/tree_regressor")
 
     def __prepare_df(self, data):
         df = pd.DataFrame(data)

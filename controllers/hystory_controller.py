@@ -2,7 +2,6 @@ from flask import Blueprint
 from flask.views import MethodView
 from application.historyService import  historyService
 from domain.tickers import tickers
-from flask_pymongo import PyMongo
 from flask import jsonify
 
 import json

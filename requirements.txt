@@ -4,3 +4,4 @@ numpy==1.21.6
 yahooquery==2.3.1
 flask_pymongo==2.3.0
 apscheduler==3.10.1
+tqdm==4.65.0

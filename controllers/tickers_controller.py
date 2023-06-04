@@ -1,11 +1,13 @@
 from flask import Blueprint
 from flask.views import MethodView
 from application.currencyService import currency_service
-from domain.tickers import tickers
 import json
+
+from db import db
 
 class TickersController(MethodView):
     def get(self):
+        tickers = db.tickers.find({}, {'_id': 0})
         return json.dumps(tickers)
 
 

@@ -31,7 +31,7 @@ class CurrencyService():
                 if key == 'open':  # Append datetime only once
                     target_data['DateTime'].append(timestamp)
 
-        predict_y = this.__executor.predict(new_data, hours)
+        predict_y = this.__executor.predict(target_data, hours)
         result = []
         for y in predict_y:
             date += timedelta(hours=1)

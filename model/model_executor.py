@@ -18,7 +18,7 @@ class ModelExecutor():
         #     .getOrCreate()
         # __model = PipelineModel.load("./model/tree_regressor")
 
-    def predict(this,ticker, open, hight, low, closed, hours):
+    def predict(this, data: dict, hours: int):
         # result = [previousData]
 
         # for i in range(period):

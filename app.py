@@ -2,10 +2,12 @@ from flask import Flask
 from flask.views import MethodView
 from infrastructure.controllers_register import controllers_register
 from schedulers.syncScheduler import syncScheduler
+from flask_cors import CORS
 
 app = Flask(__name__)
 app.config["MONGO_URI"] = "mongodb+srv://bidatius:kRVWSMsJXlhyyW3C@appcluster.gbizgwf.mongodb.net/ohlc"
 syncScheduler(app)
+CORS(app)
 
 controllers_register.include_controllers(app)
 

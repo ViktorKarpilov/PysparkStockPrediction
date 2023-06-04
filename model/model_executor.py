@@ -30,12 +30,11 @@ class ModelExecutor():
 
         return spark_df
     
-    def __get_next_df(self, prediction: dict):
+    def __get_next_df(self, prediction: dict, schema):
         price = prediction['prediction']
-        columns = ['DateTime', 'Open', 'High', 'Low', 'Close', 'Volume', 'EMA-32', 'EMA-8', 'Target']
         return self.__spark.createDataFrame([
             (prediction['DateTime'], price, price, price, price, prediction['Volume'], prediction['EMA-32'], prediction['EMA-8'], None)
-        ]).toDF(*columns)
+        ], schema=schema)
 
     def predict(self, data: dict, hours: int):
         '''
@@ -54,7 +53,7 @@ class ModelExecutor():
         result.append(prediction['prediction'])
 
         for _ in range(hours - 1):
-            next_df = self.__get_next_df(prediction)
+            next_df = self.__get_next_df(prediction, df.schema)
             prediction = [r.asDict() for r in self.__model.transform(next_df).collect()][0]
             result.append(prediction['prediction'])
 

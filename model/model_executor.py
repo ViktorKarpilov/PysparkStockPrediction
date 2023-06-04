@@ -23,6 +23,12 @@ class ModelExecutor():
         df["EMA-8"] = df["Close"].ewm(span=8, adjust=False).mean()
         df["EMA-32"] = df["Close"].ewm(span=32, adjust=False).mean()
         df.dropna(inplace=True)
+
+        spark_df = self.__spark.createDataFrame(df)
+        spark_df = spark_df.orderBy("DateTime", ascending=False).limit(1)
+        spark_df = spark_df.withColumn("Target", lit(None).cast(types.NullType()))
+
+        return spark_df
     
     def __get_next_df(self, prediction: dict):
         price = prediction['prediction']

@@ -29,12 +29,30 @@ class ModelExecutor():
         spark_df = spark_df.withColumn("Target", lit(None).cast(types.NullType()))
 
         return spark_df
+
+    def __calc_ema(self, current_close_price, previous_ema, lag):
+        k = 2 / (lag + 1)
+        current_ema = (current_close_price * k) + (previous_ema * (1 - k))
+        return current_ema
     
     def __get_next_df(self, prediction: dict, schema):
         price = prediction['prediction']
         return self.__spark.createDataFrame([
-            (prediction['DateTime'], price, price, price, price, prediction['Volume'], prediction['EMA-32'], prediction['EMA-8'], None)
+            (
+                prediction['DateTime'],
+                price, price, price, price,
+                prediction['Volume'],
+                self.__calc_ema(price, prediction['EMA-32'], 32),
+                self.__calc_ema(price, prediction['EMA-8'], 8),
+                None
+            )
         ], schema=schema)
+
+    def __restore(self, first_close_price: float, prc: list):
+        prices = [first_close_price * (1 + prc[0])]
+        for p in prc[1:]:
+            prices.append( prices[-1] * (1 + p) )
+        return prices
 
     def predict(self, data: dict, hours: int):
         '''
@@ -43,6 +61,7 @@ class ModelExecutor():
             'Open': [...],
             'High': [...],
             'Low': [...],
+            'Close': [...],
             'Volume': [...]
         }
         '''
@@ -57,6 +76,6 @@ class ModelExecutor():
             prediction = [r.asDict() for r in self.__model.transform(next_df).collect()][0]
             result.append(prediction['prediction'])
 
-        return result
+        return self.__restore(result, data['Close'][-1])
 
 model_executor = ModelExecutor()

@@ -7,14 +7,11 @@ class CurrencyService():
     def __init__(this):
         this.__executor = model_executor
 
-    def get_prediction(this, ticker, hours):
-        ticker = Ticker(ticker, asynchronous=True)
+    def get_prediction(this, symbol, hours):
+        ticker = Ticker(symbol, asynchronous=True)
 
         details = ticker.history(period='3d', interval='1h')
-        details = ticker.history(period='3d', interval='1h')
         target = details.tail(25)
-        date = target.index[0][1]
-        new_data = {}
         dickt_target = target.to_dict()
         target_data = {
             'DateTime': [],
@@ -34,10 +31,27 @@ class CurrencyService():
 
         predict_y = this.__executor.predict(target_data, hours)
 
-        result = []
-        for y in predict_y:
-            date += timedelta(hours=1)
-            result.append([y, date])
+        result = {
+            'data': {
+                'ticker': symbol,
+                'candlestick': [],
+                'prediction': []
+            },
+            'status': 'success', 'message': 'OK'
+        }
+        
+        for i in range(len(target_data['DateTime'])):
+            result['data']['candlestick'].append({
+                'x': target_data['DateTime'][i].timestamp(),
+                'y': [target_data['Open'][i], target_data['High'][i], target_data['Low'][i], target_data['Close'][i]]
+            })
+
+        latest_date = target.index[-1][1]
+        for i, y in enumerate(predict_y, start=1):
+            result['data']['prediction'].append({
+                'x': (latest_date + timedelta(hours=i)).timestamp(),
+                'y': y
+            })
 
         return json.dumps(result)
 
